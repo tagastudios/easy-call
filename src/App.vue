@@ -2,12 +2,15 @@
 import LanguageSelector from "./components/LanguageSelector.vue";
 import ScreeningQuestions from "./components/ScreeningQuestions.vue";
 import CallCounter from "./components/CallCounter.vue";
+import { PrismaClient } from "@prisma/client";
+
 import { ref } from "vue";
 
 const lang = ref("eng");
 const callCount = ref(0);
-
 const goal = 250;
+
+// const prisma = new PrismaClient();
 
 const questions = {
 	esp: [
@@ -26,25 +29,25 @@ const questions = {
 
 const answers = {
 	esp: {
-		thankfull: "Gracias!!",
-		petty: `Ohh lamento escuchar eso`,
-		agreeable: "Entiendo perfectamente",
+		agradecido: "Gracias!!",
+		penoso: `Ohh lamento escuchar eso`,
+		"de acuerdo": "Entiendo perfectamente",
 	},
 	eng: {
 		thankfull: "Thank you!!",
 		petty: `Ohh I'm sorry to hear that`,
-		agreeable: "I totally understand",
+		aggreable: "I totally understand",
 	},
 };
 
 const nextCall = () => {
-	callCount.value += 50;
+	callCount.value++;
 };
 </script>
 
 <template>
 	<header class="mb-3">
-		<h1>Odarketing v1.0</h1>
+		<h1>Easy Call System - v1.0</h1>
 		<LanguageSelector :lang="lang" @update-lang="lang = $event" />
 		<CallCounter :goal="goal" :count="callCount" :lang="lang" />
 	</header>

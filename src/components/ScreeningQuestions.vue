@@ -1,6 +1,5 @@
 <template>
 	<header class="flex align-center mb-1">
-		<h2 class="mr-1">{{ currentQuestion }}</h2>
 		<div class="icons-wrapper flex align-center gap-1">
 			<Icon
 				v-if="!isPlaying"
@@ -18,12 +17,13 @@
 			<Icon icon="fa6-solid:circle-stop" class="icon" @click="pauseVoice" />
 			<Icon icon="fa6-solid:circle-xmark" class="icon" @click="resetData" />
 		</div>
+		<h2 class="mr-1">{{ currentQuestion }}</h2>
 	</header>
 	<main class="grid">
 		<BaseButton
 			@click="currentQuestionNumber++, pauseVoice()"
-			v-for="(answer, index) in answers"
-			:title="answer"
+			v-for="(answer, title, index) in answers"
+			:title="title"
 			:key="index"
 		/>
 	</main>
@@ -47,7 +47,7 @@ export default {
 			default: () => ["Question A", "Question B", "Question C", "Question  D"],
 		},
 		answers: {
-			tpye: Array,
+			tpye: [Array, Object],
 			required: true,
 			default: () => ["Answer A", "Answer B", "Answer C", "Answer  D"],
 		},
@@ -89,14 +89,8 @@ export default {
 	gap: 1rem;
 }
 
-header h2 {
-	flex: 1;
-}
-
-@media screen and (max-width: 550px) {
-	header {
-		flex-direction: column;
-		align-items: flex-start;
-	}
+header {
+	flex-direction: column;
+	align-items: flex-start;
 }
 </style>
