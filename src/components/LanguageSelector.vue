@@ -37,6 +37,6 @@ li {
 }
 
 li:hover {
-	text-shadow: 2px 2px 0px rebeccapurple;
+	text-decoration: underline;
 }
 </style>

@@ -24,21 +24,21 @@
 	<div v-else class="flex align-center">
 		<span class="mr-half">You have {{ count }} calls.</span>
 		<span v-if="remaining < 0">The extra mile right?</span>
-		<span v-else-if="remaining <= 50">
+		<span v-else-if="remaining <= goal / 3.75">
 			Wrapping up, just missing at least:
 			<span :style="{ color: `rgba(158, 91, 224, ${alphaMissingCalls})` }">{{
 				remaining
 			}}</span>
 		</span>
-		<span v-else-if="remaining <= 100" class="flex align-center"
+		<span v-else-if="remaining <= goal / 2.75" class="flex align-center"
 			>You're doing good! Almost done.
 			<Icon class="ml-half" icon="fa6-solid:face-smile-wink"
 		/></span>
-		<span v-else-if="remaining <= 150" class="flex align-center"
+		<span v-else-if="remaining <= goal / 1.75" class="flex align-center"
 			>Cheers, you are near the middle.
 			<Icon class="ml-half" icon="fa6-solid:face-smile-beam"
 		/></span>
-		<span v-else-if="remaining <= 200" class="flex align-center"
+		<span v-else-if="remaining <= goal / 1.25" class="flex align-center"
 			>Niceee, getting some progress.
 			<Icon class="ml-half" icon="fa6-solid:face-grin-squint"
 		/></span>
@@ -65,7 +65,7 @@ export default {
 	},
 	computed: {
 		alphaMissingCalls() {
-			return this.count / this.goal / 2 + 0.5;
+			return this.count / this.goal;
 		},
 		remaining() {
 			return this.goal - this.count;
