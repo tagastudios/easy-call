@@ -1,7 +1,10 @@
 <template>
 	<div>{{ lang === "esp" ? "Meta de hoy: " : `Today's goal: ` }}{{ goal }}</div>
 	<div v-if="lang === 'esp'" class="flex align-center">
-		<span class="mr-half">Llevas {{ count }} llamadas.</span>
+		<span class="mr-half">
+			<input type="number" name="count" id="count" v-model="_count" />
+			Llevas <label for="count">{{ count }}</label> llamadas.</span
+		>
 		<span v-if="remaining < 0">Bien!! la milla extra.</span>
 		<span v-else-if="remaining <= 50"
 			>Casi terminas, solo faltan:
@@ -22,7 +25,10 @@
 		/></span>
 	</div>
 	<div v-else class="flex align-center">
-		<span class="mr-half">You have {{ count }} calls.</span>
+		<span class="mr-half">
+			<input type="number" name="count" id="count" v-model="_count" />
+			You have <label for="count" editable>{{ count }}</label> calls.</span
+		>
 		<span v-if="remaining < 0">The extra mile right?</span>
 		<span v-else-if="remaining <= goal / 3.75">
 			Wrapping up, just missing at least:
@@ -49,6 +55,7 @@
 import { Icon } from "@iconify/vue";
 export default {
 	name: "CallCounter",
+	emits: ["update-count"],
 	components: {
 		Icon,
 	},
@@ -67,6 +74,15 @@ export default {
 		alphaMissingCalls() {
 			return this.count / this.goal;
 		},
+		_count: {
+			get() {
+				return this.count;
+			},
+			set(val) {
+				if (new RegExp("[0-9]$").test(Number(val)))
+					this.$emit("update-count", Number(val));
+			},
+		},
 		remaining() {
 			return this.goal - this.count;
 		},
@@ -74,4 +90,36 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#count {
+	opacity: 0;
+	float: right;
+	border: none;
+	outline: none;
+	display: flex;
+	width: 40px;
+}
+#count:focus + label {
+	border-bottom: 2px solid gray;
+	padding: 0 0.25rem;
+	transition: all 0.2s ease-in-out;
+	position: relative;
+}
+#count:focus + label::before {
+	width: 1px;
+	height: 80%;
+	background: #333;
+	position: absolute;
+	top: 50%;
+	right: 0;
+	content: "";
+	transform: translate(-50%, -50%);
+	animation: blink 0.95s ease-in-out infinite;
+	opacity: 1;
+}
+@keyframes blink {
+	to {
+		opacity: 0;
+	}
+}
+</style>
